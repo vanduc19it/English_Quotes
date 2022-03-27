@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/home_page.dart';
 import 'package:flutter_app/values/app_assets.dart';
 import 'package:flutter_app/values/app_colors.dart';
 import 'package:flutter_app/values/app_styles.dart';
@@ -50,7 +52,12 @@ class LandingPage extends StatelessWidget {
                 child: RawMaterialButton(
                   shape: CircleBorder(),
                   fillColor: AppColors.lightBlue,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => HomePage()),
+                        (route) => false);
+                  },
                   child: Image.asset(AppAssets.rightArrow),
                 ),
               ),
