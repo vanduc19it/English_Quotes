@@ -12,7 +12,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  PageController _pageController = PageController();
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    _pageController = PageController(viewportFraction: 0.9);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +39,11 @@ class _HomePageState extends State<HomePage> {
           )),
       body: Container(
           width: double.infinity,
-          margin: const EdgeInsets.symmetric(horizontal: 24),
+          // margin: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
               Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 height: size.height * 1 / 10,
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -56,73 +63,85 @@ class _HomePageState extends State<HomePage> {
                       },
                       itemCount: 5,
                       itemBuilder: (context, index) {
-                        return Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(24)),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                    alignment: Alignment.centerRight,
-                                    child: Image.asset(AppAssets.heart)),
-                                RichText(
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
-                                    text: TextSpan(
-                                        text: 'B',
-                                        style: TextStyle(
-                                            fontFamily: FontFamily.sen,
-                                            fontSize: 89,
-                                            fontWeight: FontWeight.bold,
-                                            shadows: [
-                                              BoxShadow(
-                                                  color: Colors.black38,
-                                                  offset: Offset(3, 6),
-                                                  blurRadius: 6),
-                                            ]),
-                                        children: [
-                                          TextSpan(
-                                              text: 'eautiful',
-                                              style: TextStyle(
-                                                  fontFamily: FontFamily.sen,
-                                                  fontSize: 56,
-                                                  fontWeight: FontWeight.bold,
-                                                  shadows: [
-                                                    BoxShadow(
-                                                        color: Colors.black38,
-                                                        offset: Offset(3, 6),
-                                                        blurRadius: 6),
-                                                  ])),
-                                        ])),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 24),
-                                  child: Text(
-                                    '"Think of all the beauty still left around you and be happy."',
-                                    style:
-                                        AppStyles.h4.copyWith(letterSpacing: 1),
-                                  ),
-                                )
-                              ],
-                            ));
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                  color: AppColors.primaryColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(24)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(3, 6),
+                                        blurRadius: 6)
+                                  ]),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Image.asset(AppAssets.heart)),
+                                  RichText(
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      text: TextSpan(
+                                          text: 'B',
+                                          style: TextStyle(
+                                              fontFamily: FontFamily.sen,
+                                              fontSize: 89,
+                                              fontWeight: FontWeight.bold,
+                                              shadows: [
+                                                BoxShadow(
+                                                    color: Colors.black38,
+                                                    offset: Offset(3, 6),
+                                                    blurRadius: 6),
+                                              ]),
+                                          children: [
+                                            TextSpan(
+                                                text: 'eautiful',
+                                                style: TextStyle(
+                                                    fontFamily: FontFamily.sen,
+                                                    fontSize: 56,
+                                                    fontWeight: FontWeight.bold,
+                                                    shadows: [
+                                                      BoxShadow(
+                                                          color: Colors.black38,
+                                                          offset: Offset(3, 6),
+                                                          blurRadius: 6),
+                                                    ])),
+                                          ])),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 24),
+                                    child: Text(
+                                      '"Think of all the beauty still left around you and be happy."',
+                                      style: AppStyles.h4.copyWith(
+                                          letterSpacing: 1,
+                                          color: AppColors.textColor),
+                                    ),
+                                  )
+                                ],
+                              )),
+                        );
                       })),
-              SizedBox(
-                  height: size.height * 1 / 18,
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return buildIndicator(index == _currentIndex, size);
-                        }),
-                  ))
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: SizedBox(
+                    height: size.height * 1 / 18,
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return buildIndicator(index == _currentIndex, size);
+                          }),
+                    )),
+              )
             ],
           )),
       floatingActionButton: FloatingActionButton(
