@@ -8,6 +8,7 @@ import 'package:flutter_app/packages/quote/quote.dart';
 import 'package:flutter_app/values/app_assets.dart';
 import 'package:flutter_app/values/app_colors.dart';
 import 'package:flutter_app/values/app_styles.dart';
+import 'package:flutter_app/widgets/app_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,6 +67,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     _pageController = PageController(viewportFraction: 0.9);
@@ -77,8 +80,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: AppColors.secondColor,
-      appBar: AppBar(
+        key: _scaffoldKey,
+        backgroundColor: AppColors.secondColor,
+        appBar: AppBar(
           backgroundColor: AppColors.secondColor,
           elevation: 0,
           title: Text(
@@ -87,140 +91,181 @@ class _HomePageState extends State<HomePage> {
                 AppStyles.h3.copyWith(color: AppColors.textColor, fontSize: 36),
           ),
           leading: InkWell(
-            onTap: () {},
+            onTap: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
             child: Image.asset(AppAssets.menu),
-          )),
-      body: Container(
-          width: double.infinity,
-          // margin: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                height: size.height * 1 / 10,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '"$quote"',
-                  style: AppStyles.h5
-                      .copyWith(fontSize: 12, color: AppColors.textColor),
+          ),
+        ),
+        body: Container(
+            width: double.infinity,
+            // margin: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  height: size.height * 1 / 10,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '"$quote"',
+                    style: AppStyles.h5
+                        .copyWith(fontSize: 12, color: AppColors.textColor),
+                  ),
                 ),
-              ),
-              Container(
-                  height: size.height * 2 / 3,
-                  child: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: (index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      },
-                      itemCount: words.length,
-                      itemBuilder: (context, index) {
-                        String firstLetter =
-                            words[index].noun != null ? words[index].noun! : '';
-                        firstLetter = firstLetter.substring(0, 1);
+                Container(
+                    height: size.height * 2 / 3,
+                    child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                        itemCount: words.length,
+                        itemBuilder: (context, index) {
+                          String firstLetter = words[index].noun != null
+                              ? words[index].noun!
+                              : '';
+                          firstLetter = firstLetter.substring(0, 1);
 
-                        String leftLetter =
-                            words[index].noun != null ? words[index].noun! : '';
-                        leftLetter = leftLetter.substring(1, leftLetter.length);
+                          String leftLetter = words[index].noun != null
+                              ? words[index].noun!
+                              : '';
+                          leftLetter =
+                              leftLetter.substring(1, leftLetter.length);
 
-                        String quoteDefault =
-                            "Think of all the beauty still left around you and be happy.";
+                          String quoteDefault =
+                              "Think of all the beauty still left around you and be happy.";
 
-                        String quote = words[index].quote != null
-                            ? words[index].quote!
-                            : quoteDefault;
+                          String quote = words[index].quote != null
+                              ? words[index].quote!
+                              : quoteDefault;
 
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                  color: AppColors.primaryColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(24)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black26,
-                                        offset: Offset(3, 6),
-                                        blurRadius: 6)
-                                  ]),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      alignment: Alignment.centerRight,
-                                      child: Image.asset(AppAssets.heart)),
-                                  RichText(
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.start,
-                                      text: TextSpan(
-                                          text: firstLetter,
-                                          style: TextStyle(
-                                              fontFamily: FontFamily.sen,
-                                              fontSize: 89,
-                                              fontWeight: FontWeight.bold,
-                                              shadows: [
-                                                BoxShadow(
-                                                    color: Colors.black38,
-                                                    offset: Offset(3, 6),
-                                                    blurRadius: 6),
-                                              ]),
-                                          children: [
-                                            TextSpan(
-                                                text: leftLetter,
-                                                style: TextStyle(
-                                                    fontFamily: FontFamily.sen,
-                                                    fontSize: 56,
-                                                    fontWeight: FontWeight.bold,
-                                                    shadows: [
-                                                      BoxShadow(
-                                                          color: Colors.black38,
-                                                          offset: Offset(3, 6),
-                                                          blurRadius: 6),
-                                                    ])),
-                                          ])),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 24),
-                                    child: Text(
-                                      '"$quote"',
-                                      style: AppStyles.h4.copyWith(
-                                          letterSpacing: 1,
-                                          color: AppColors.textColor),
-                                    ),
-                                  )
-                                ],
-                              )),
-                        );
-                      })),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: SizedBox(
-                    height: size.height * 1 / 18,
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return buildIndicator(index == _currentIndex, size);
-                          }),
-                    )),
-              )
-            ],
-          )),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.primaryColor,
-          onPressed: () {
-            setState(() {
-              getEnglishToday();
-            });
-          },
-          child: Image.asset(AppAssets.exchange)),
-    );
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                    color: AppColors.primaryColor,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(24)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black26,
+                                          offset: Offset(3, 6),
+                                          blurRadius: 6)
+                                    ]),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        alignment: Alignment.centerRight,
+                                        child: Image.asset(AppAssets.heart)),
+                                    RichText(
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.start,
+                                        text: TextSpan(
+                                            text: firstLetter,
+                                            style: TextStyle(
+                                                fontFamily: FontFamily.sen,
+                                                fontSize: 89,
+                                                fontWeight: FontWeight.bold,
+                                                shadows: [
+                                                  BoxShadow(
+                                                      color: Colors.black38,
+                                                      offset: Offset(3, 6),
+                                                      blurRadius: 6),
+                                                ]),
+                                            children: [
+                                              TextSpan(
+                                                  text: leftLetter,
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          FontFamily.sen,
+                                                      fontSize: 56,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      shadows: [
+                                                        BoxShadow(
+                                                            color:
+                                                                Colors.black38,
+                                                            offset:
+                                                                Offset(3, 6),
+                                                            blurRadius: 6),
+                                                      ])),
+                                            ])),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 24),
+                                      child: Text(
+                                        '"$quote"',
+                                        style: AppStyles.h4.copyWith(
+                                            letterSpacing: 1,
+                                            color: AppColors.textColor),
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          );
+                        })),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: SizedBox(
+                      height: size.height * 1 / 18,
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return buildIndicator(
+                                  index == _currentIndex, size);
+                            }),
+                      )),
+                )
+              ],
+            )),
+        floatingActionButton: FloatingActionButton(
+            backgroundColor: AppColors.primaryColor,
+            onPressed: () {
+              setState(() {
+                getEnglishToday();
+              });
+            },
+            child: Image.asset(AppAssets.exchange)),
+        drawer: Drawer(
+            child: Container(
+                color: AppColors.lightBlue,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24, left: 16),
+                        child: Text(
+                          "Your mind",
+                          style:
+                              AppStyles.h3.copyWith(color: AppColors.textColor),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24),
+                        child: AppButton(
+                            label: 'Favorites',
+                            onTap: () {
+                              print('hello');
+                            }),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24),
+                        child: AppButton(
+                            label: 'Your control',
+                            onTap: () {
+                              print('hello');
+                            }),
+                      ),
+                    ]))));
   }
 
   Widget buildIndicator(bool isActive, Size size) {
