@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/englishtoday.dart';
 import 'package:flutter_app/packages/quote/qoute_model.dart';
 import 'package:flutter_app/packages/quote/quote.dart';
+import 'package:flutter_app/pages/control_page.dart';
 import 'package:flutter_app/values/app_assets.dart';
 import 'package:flutter_app/values/app_colors.dart';
 import 'package:flutter_app/values/app_styles.dart';
@@ -262,7 +263,10 @@ class _HomePageState extends State<HomePage> {
                         child: AppButton(
                             label: 'Your control',
                             onTap: () {
-                              print('hello');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => ControlPage()));
                             }),
                       ),
                     ]))));

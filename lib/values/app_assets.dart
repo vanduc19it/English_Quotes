@@ -5,4 +5,5 @@ class AppAssets {
   static final String exchange = imagePath + 'exchange.png';
   static final String menu = imagePath + 'menu.png';
   static final String heart = imagePath + 'heart.png';
+  static final String leftArrow = imagePath + 'left_arrow.png';
 }
