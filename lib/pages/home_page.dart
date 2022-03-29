@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/englishtoday.dart';
@@ -9,7 +10,9 @@ import 'package:flutter_app/pages/control_page.dart';
 import 'package:flutter_app/values/app_assets.dart';
 import 'package:flutter_app/values/app_colors.dart';
 import 'package:flutter_app/values/app_styles.dart';
+import 'package:flutter_app/values/share_keys.dart';
 import 'package:flutter_app/widgets/app_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -45,17 +48,20 @@ class _HomePageState extends State<HomePage> {
     return newList;
   }
 
-  getEnglishToday() {
+  getEnglishToday() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int len = prefs.getInt(ShareKeys.counter) ?? 5;
     List<String> newList = [];
     List<int> rans = fixedListRandom(
-      len: 5,
+      len: len,
       max: nouns.length,
     );
     rans.forEach((index) {
       newList.add(nouns[index]);
     });
-
-    words = newList.map((e) => getQuote(e)).toList();
+    setState(() {
+      words = newList.map((e) => getQuote(e)).toList();
+    });
   }
 
   EnglishToday getQuote(String noun) {
@@ -73,8 +79,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _pageController = PageController(viewportFraction: 0.9);
-    getEnglishToday();
     super.initState();
+    getEnglishToday();
   }
 
   @override
@@ -198,8 +204,9 @@ class _HomePageState extends State<HomePage> {
                                             ])),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 24),
-                                      child: Text(
+                                      child: AutoSizeText(
                                         '"$quote"',
+                                        maxFontSize: 26,
                                         style: AppStyles.h4.copyWith(
                                             letterSpacing: 1,
                                             color: AppColors.textColor),
