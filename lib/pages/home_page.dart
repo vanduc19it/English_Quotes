@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/englishtoday.dart';
 import 'package:flutter_app/packages/quote/qoute_model.dart';
 import 'package:flutter_app/packages/quote/quote.dart';
+import 'package:flutter_app/pages/all_words_page.dart';
 import 'package:flutter_app/pages/control_page.dart';
 import 'package:flutter_app/values/app_assets.dart';
 import 'package:flutter_app/values/app_colors.dart';
@@ -216,23 +217,26 @@ class _HomePageState extends State<HomePage> {
                                 )),
                           );
                         })),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: SizedBox(
-                      height: size.height * 1 / 18,
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return buildIndicator(
-                                  index == _currentIndex, size);
-                            }),
-                      )),
-                )
+                //indicator
+                _currentIndex >= 5
+                    ? buildShowMore()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: SizedBox(
+                            height: size.height * 1 / 18,
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {
+                                    return buildIndicator(
+                                        index == _currentIndex, size);
+                                  }),
+                            )),
+                      )
               ],
             )),
         floatingActionButton: FloatingActionButton(
@@ -280,7 +284,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildIndicator(bool isActive, Size size) {
-    return Container(
+    return AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInToLinear,
         margin: const EdgeInsets.symmetric(horizontal: 16),
         height: 12,
         width: isActive ? size.width * 1 / 5 : 24,
@@ -291,5 +297,33 @@ class _HomePageState extends State<HomePage> {
               BoxShadow(
                   color: Colors.black38, offset: Offset(2, 3), blurRadius: 3)
             ]));
+  }
+
+  Widget buildShowMore() {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        alignment: Alignment.centerLeft,
+        child: Material(
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+          elevation: 4,
+          color: AppColors.primaryColor,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => AllWordsPage(words: this.words)));
+            },
+            splashColor: Colors.black38,
+            borderRadius: BorderRadius.all(Radius.circular(24)),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: Text(
+                'Show more',
+                style: AppStyles.h5,
+              ),
+            ),
+          ),
+        ));
   }
 }
