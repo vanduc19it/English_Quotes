@@ -30,31 +30,26 @@ class AllPage extends StatelessWidget {
             itemCount: words.length,
             itemBuilder: (context, index) {
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                    color: (index % 2) == 0
-                        ? AppColors.primaryColor
-                        : AppColors.secondColor,
-                    borderRadius: BorderRadius.all(Radius.circular(8))),
-                child: words[index].isFavorite
-                    ? ListTile(
-                        contentPadding: const EdgeInsets.all(16),
-                        title: Text(
-                          words[index].noun!,
-                          style: (index % 2) == 0
-                              ? AppStyles.h4
-                              : AppStyles.h4
-                                  .copyWith(color: AppColors.textColor),
-                        ),
-                        subtitle: Text(words[index].quote ??
-                            '"Think of all the beauty still left around you and be happy."'),
-                        leading: Icon(Icons.favorite,
-                            color: words[index].isFavorite
-                                ? Colors.red
-                                : Colors.grey),
-                      )
-                    : Container(),
-              );
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                      color: (index % 2) == 0
+                          ? AppColors.primaryColor
+                          : AppColors.secondColor,
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    title: Text(
+                      words[index].noun!,
+                      style: (index % 2) == 0
+                          ? AppStyles.h4
+                          : AppStyles.h4.copyWith(color: AppColors.textColor),
+                    ),
+                    subtitle: Text(words[index].quote ??
+                        '"Think of all the beauty still left around you and be happy."'),
+                    leading: Icon(Icons.favorite,
+                        color:
+                            words[index].isFavorite ? Colors.red : Colors.grey),
+                  ));
             }));
   }
 }

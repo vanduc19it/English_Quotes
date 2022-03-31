@@ -9,6 +9,7 @@ import 'package:flutter_app/packages/quote/quote.dart';
 import 'package:flutter_app/pages/all_page.dart';
 import 'package:flutter_app/pages/all_words_page.dart';
 import 'package:flutter_app/pages/control_page.dart';
+import 'package:flutter_app/pages/favorite_page.dart';
 import 'package:flutter_app/values/app_assets.dart';
 import 'package:flutter_app/values/app_colors.dart';
 import 'package:flutter_app/values/app_styles.dart';
@@ -348,7 +349,11 @@ class _HomePageState extends State<HomePage> {
                         child: AppButton(
                             label: 'Favorites',
                             onTap: () {
-                              print('hello');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          FavoritePage(words: words)));
                             }),
                       ),
                       Padding(
