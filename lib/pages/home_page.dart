@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/englishtoday.dart';
 import 'package:flutter_app/packages/quote/qoute_model.dart';
 import 'package:flutter_app/packages/quote/quote.dart';
+import 'package:flutter_app/pages/all_page.dart';
 import 'package:flutter_app/pages/all_words_page.dart';
 import 'package:flutter_app/pages/control_page.dart';
 import 'package:flutter_app/values/app_assets.dart';
@@ -129,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                             _currentIndex = index;
                           });
                         },
-                        itemCount: words.length,
+                        itemCount: words.length > 5 ? 6 : words.length,
                         itemBuilder: (context, index) {
                           String firstLetter = words[index].noun != null
                               ? words[index].noun!
@@ -168,39 +169,50 @@ class _HomePageState extends State<HomePage> {
                                     BorderRadius.all(Radius.circular(24)),
                                 child: Container(
                                     padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                            alignment: Alignment.centerRight,
-                                            child: Image.asset(AppAssets.heart,
-                                                color: words[index].isFavorite
-                                                    ? Colors.red
-                                                    : Colors.white)),
-                                        RichText(
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.start,
-                                            text: TextSpan(
-                                                text: firstLetter,
-                                                style: TextStyle(
-                                                    fontFamily: FontFamily.sen,
-                                                    fontSize: 89,
-                                                    fontWeight: FontWeight.bold,
-                                                    shadows: [
+                                    child: index >= 5
+                                        ? InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        AllPage(words: words),
+                                                  ));
+                                            },
+                                            child: Center(
+                                                child: Text('Show more...',
+                                                    style: AppStyles.h3
+                                                        .copyWith(shadows: [
                                                       BoxShadow(
-                                                          color: Colors.black38,
+                                                          color: Colors.black26,
                                                           offset: Offset(3, 6),
-                                                          blurRadius: 6),
-                                                    ]),
-                                                children: [
-                                                  TextSpan(
-                                                      text: leftLetter,
+                                                          blurRadius: 6)
+                                                    ]))),
+                                          ) //showmore
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Image.asset(
+                                                      AppAssets.heart,
+                                                      color: words[index]
+                                                              .isFavorite
+                                                          ? Colors.red
+                                                          : Colors.white)),
+                                              RichText(
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  text: TextSpan(
+                                                      text: firstLetter,
                                                       style: TextStyle(
                                                           fontFamily:
                                                               FontFamily.sen,
-                                                          fontSize: 56,
+                                                          fontSize: 89,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           shadows: [
@@ -210,21 +222,44 @@ class _HomePageState extends State<HomePage> {
                                                                 offset: Offset(
                                                                     3, 6),
                                                                 blurRadius: 6),
-                                                          ])),
-                                                ])),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 24),
-                                          child: AutoSizeText(
-                                            '"$quote"',
-                                            maxFontSize: 26,
-                                            style: AppStyles.h4.copyWith(
-                                                letterSpacing: 1,
-                                                color: AppColors.textColor),
-                                          ),
-                                        )
-                                      ],
-                                    )),
+                                                          ]),
+                                                      children: [
+                                                        TextSpan(
+                                                            text: leftLetter,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    FontFamily
+                                                                        .sen,
+                                                                fontSize: 56,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                shadows: [
+                                                                  BoxShadow(
+                                                                      color: Colors
+                                                                          .black38,
+                                                                      offset:
+                                                                          Offset(
+                                                                              3,
+                                                                              6),
+                                                                      blurRadius:
+                                                                          6),
+                                                                ])),
+                                                      ])),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 24),
+                                                child: AutoSizeText(
+                                                  '"$quote"',
+                                                  maxFontSize: 26,
+                                                  style: AppStyles.h4.copyWith(
+                                                      letterSpacing: 1,
+                                                      color:
+                                                          AppColors.textColor),
+                                                ),
+                                              )
+                                            ],
+                                          )),
                               ),
                             ),
                           );
