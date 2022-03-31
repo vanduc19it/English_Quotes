@@ -14,6 +14,7 @@ import 'package:flutter_app/values/app_colors.dart';
 import 'package:flutter_app/values/app_styles.dart';
 import 'package:flutter_app/values/share_keys.dart';
 import 'package:flutter_app/widgets/app_button.dart';
+import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -164,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                                         !words[index].isFavorite;
                                   });
                                 },
-                                splashColor: Colors.black12,
+                                splashColor: Colors.transparent,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(24)),
                                 child: Container(
@@ -193,15 +194,49 @@ class _HomePageState extends State<HomePage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  child: Image.asset(
-                                                      AppAssets.heart,
-                                                      color: words[index]
-                                                              .isFavorite
-                                                          ? Colors.red
-                                                          : Colors.white)),
+                                              LikeButton(
+                                                onTap: (bool isLiked) async {
+                                                  setState(() {
+                                                    words[index].isFavorite =
+                                                        !words[index]
+                                                            .isFavorite;
+                                                  });
+                                                  return words[index]
+                                                      .isFavorite;
+                                                },
+                                                isLiked:
+                                                    words[index].isFavorite,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                size: 42,
+                                                circleColor: CircleColor(
+                                                    start: Color(0xff00ddff),
+                                                    end: Color(0xff0099cc)),
+                                                bubblesColor: BubblesColor(
+                                                  dotPrimaryColor:
+                                                      Color(0xff33b5e5),
+                                                  dotSecondaryColor:
+                                                      Color(0xff0099cc),
+                                                ),
+                                                likeBuilder: (bool isLiked) {
+                                                  return ImageIcon(
+                                                    AssetImage(AppAssets.heart),
+                                                    color: isLiked
+                                                        ? Colors.red
+                                                        : Colors.white,
+                                                    size: 42,
+                                                  );
+                                                },
+                                              ),
+                                              // Container(
+                                              //     alignment:
+                                              //         Alignment.centerRight,
+                                              //     child: Image.asset(
+                                              //         AppAssets.heart,
+                                              //         color: words[index]
+                                              //                 .isFavorite
+                                              //             ? Colors.red
+                                              //             : Colors.white)),
                                               RichText(
                                                   maxLines: 1,
                                                   overflow:
